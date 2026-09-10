@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tile Pro Calculator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #222;
+}
+
+header {
+    background: #111827;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 26px;
+}
+
+header p {
+    margin-top: 6px;
+    color: #cbd5e1;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-bottom: 18px;
+    font-size: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #111827;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.calculate {
+    background: #111827;
+    color: white;
+}
+
+.reset {
+    background: #e5e7eb;
+    color: #111827;
+    margin-left: 8px;
+}
+
+.result {
+    margin-top: 18px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border-left: 4px solid #111827;
+}
+
+.result p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.result strong {
+    font-size: 18px;
+}
+
+.final {
+    font-size: 22px !important;
+    font-weight: bold;
+}
+
+@media(max-width:600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    header h1 {
+        font-size: 23px;
+    }
+
+    button {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🧮 Tile Pro Calculator</h1>
+    <p>Professional Tile & Construction Calculator</p>
+</header>
+
+<div class="container">
+
+<!-- TILE AREA -->
+<div class="card">
+    <h2>📐 Tile Area Calculator</h2>
+
+    <div class="grid">
+        <div class="input-group">
+            <label>Tile Length (mm)</label>
+            <input type="number" id="tileLength" placeholder="Example: 600">
+        </div>
+
+        <div class="input-group">
+            <label>Tile Width (mm)</label>
+            <input type="number" id="tileWidth" placeholder="Example: 1200">
+        </div>
+
+        <div class="input-group">
+            <label>Quantity (Tiles)</label>
+            <input type="number" id="tileQty" placeholder="Example: 20">
+        </div>
+    </div>
+
+    <button class="calculate" onclick="calculateArea()">Calculate Area</button>
+    <button class="reset" onclick="resetArea()">Reset</button>
+
+    <div class="result" id="areaResult">
+        <p>Area of 1 Tile: <strong>0 m²</strong></p>
+        <p>Total Area: <strong>0 m²</strong></p>
+        <p>Total Area: <strong>0 ft²</strong></p>
+    </div>
+</div>
+
+
+<!-- CONVERTER -->
+<div class="card">
+    <h2>🔄 m² ↔ ft² Converter</h2>
+
+    <div class="grid">
+        <div class="input-group">
+            <label>Square Meter (m²)</label>
+            <input type="number" id="sqm" placeholder="Example: 10">
+        </div>
+
+        <div class="input-group">
+            <label>Square Feet (ft²)</label>
+            <input type="number" id="sqft" placeholder="Example: 107.639">
+        </div>
+    </div>
+
+    <button class="calculate" onclick="sqmToSqft()">m² → ft²</button>
+    <button class="calculate" onclick="sqftToSqm()">ft² → m²</button>
+
+    <div class="result" id="convertResult">
+        <p>Result: <strong>0</strong></p>
+    </div>
+</div>
+
+
+<!-- PRICE -->
+<div class="card">
+    <h2>💰 Tile Price Calculator</h2>
+
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Price per m² (OMR)</label>
+            <input type="number" id="priceM2" placeholder="Example: 3.500">
+        </div>
+
+        <div class="input-group">
+            <label>Required Area (m²)</label>
+            <input type="number" id="requiredArea" placeholder="Example: 50">
+        </div>
+
+        <div class="input-group">
+            <label>Discount (%)</label>
+            <input type="number" id="discount" placeholder="Example: 10">
+        </div>
+
+        <div class="input-group">
+            <label>VAT (%)</label>
+            <input type="number" id="vat" placeholder="Example: 5">
+        </div>
+
+    </div>
+
+    <button class="calculate" onclick="calculatePrice()">Calculate Price</button>
+    <button class="reset" onclick="resetPrice()">Reset</button>
+
+    <div class="result" id="priceResult">
+        <p>Original Amount: <strong>0.000 OMR</strong></p>
+        <p>Discount: <strong>0.000 OMR</strong></p>
+        <p>After Discount: <strong>0.000 OMR</strong></p>
+        <p>VAT: <strong>0.000 OMR</strong></p>
+        <p class="final">Final Total: 0.000 OMR</p>
+    </div>
+</div>
+
+
+<!-- BOX -->
+<div class="card">
+    <h2>📦 Box Calculator</h2>
+
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Required Area (m²)</label>
+            <input type="number" id="boxRequired" placeholder="Example: 100">
+        </div>
+
+        <div class="input-group">
+            <label>Area per Box (m²)</label>
+            <input type="number" id="areaPerBox" placeholder="Example: 1.44">
+        </div>
+
+        <div class="input-group">
+            <label>Price per Box (OMR)</label>
+            <input type="number" id="boxPrice" placeholder="Example: 5">
+        </div>
+
+    </div>
+
+    <button class="calculate" onclick="calculateBox()">Calculate Box</button>
+
+    <div class="result" id="boxResult">
+        <p>Required Boxes: <strong>0</strong></p>
+        <p>Total Supplied Area: <strong>0 m²</strong></p>
+        <p>Total Price: <strong>0.000 OMR</strong></p>
+    </div>
+</div>
+
+
+<!-- WALL / FLOOR -->
+<div class="card">
+    <h2>🏠 Wall / Floor Area Calculator</h2>
+
+    <div class="grid">
+
+        <div class="input-group">
+            <label>Length (m)</label>
+            <input type="number" id="wallLength" placeholder="Example: 5">
+        </div>
+
+        <div class="input-group">
+            <label>Width (m)</label>
+            <input type="number" id="wallWidth" placeholder="Example: 4">
+        </div>
+
+        <div class="input-group">
+            <label>Height (m)</label>
+            <input type="number" id="wallHeight" placeholder="Example: 3">
+        </div>
+
+        <div class="input-group">
+            <label>Number of Walls</label>
+            <input type="number" id="wallCount" value="4">
+        </div>
+
+        <div class="input-group">
+            <label>Door/Window Deduction (m²)</label>
+            <input type="number" id="deduction" value="0">
+        </div>
+
+    </div>
+
+    <button class="calculate" onclick="calculateWall()">Calculate Area</button>
+
+    <div class="result" id="wallResult">
+        <p>Final Area: <strong>0 m²</strong></p>
+        <p>Final Area: <strong>0 ft²</strong></p>
+    </div>
+</div>
+
+</div>
+
+
+<script>
+
+// TILE AREA
+function calculateArea() {
+
+    let length = Number(document.getElementById("tileLength").value);
+    let width = Number(document.getElementById("tileWidth").value);
+    let qty = Number(document.getElementById("tileQty").value);
+
+    let oneTile = (length / 1000) * (width / 1000);
+    let total = oneTile * qty;
+    let sqft = total * 10.7639;
+
+    document.getElementById("areaResult").innerHTML = `
+        <p>Area of 1 Tile: <strong>${oneTile.toFixed(4)} m²</strong></p>
+        <p>Total Area: <strong>${total.toFixed(3)} m²</strong></p>
+        <p>Total Area: <strong>${sqft.toFixed(3)} ft²</strong></p>
+    `;
+}
+
+function resetArea() {
+    document.getElementById("tileLength").value = "";
+    document.getElementById("tileWidth").value = "";
+    document.getElementById("tileQty").value = "";
+
+    document.getElementById("areaResult").innerHTML = `
+        <p>Area of 1 Tile: <strong>0 m²</strong></p>
+        <p>Total Area: <strong>0 m²</strong></p>
+        <p>Total Area: <strong>0 ft²</strong></p>
+    `;
+}
+
+
+// CONVERTER
+function sqmToSqft() {
+
+    let sqm = Number(document.getElementById("sqm").value);
+    let result = sqm * 10.7639;
+
+    document.getElementById("convertResult").innerHTML =
+        `<p>Result: <strong>${result.toFixed(3)} ft²</strong></p>`;
+}
+
+function sqftToSqm() {
+
+    let sqft = Number(document.getElementById("sqft").value);
+    let result = sqft / 10.7639;
+
+    document.getElementById("convertResult").innerHTML =
+        `<p>Result: <strong>${result.toFixed(3)} m²</strong></p>`;
+}
+
+
+// PRICE
+function calculatePrice() {
+
+    let price = Number(document.getElementById("priceM2").value);
+    let area = Number(document.getElementById("requiredArea").value);
+    let discount = Number(document.getElementById("discount").value);
+    let vat = Number(document.getElementById("vat").value);
+
+    let original = price * area;
+    let discountAmount = original * discount / 100;
+    let afterDiscount = original - discountAmount;
+    let vatAmount = afterDiscount * vat / 100;
+    let finalTotal = afterDiscount + vatAmount;
+
+    document.getElementById("priceResult").innerHTML = `
+        <p>Original Amount: <strong>${original.toFixed(3)} OMR</strong></p>
+        <p>Discount: <strong>${discountAmount.toFixed(3)} OMR</strong></p>
+        <p>After Discount: <strong>${afterDiscount.toFixed(3)} OMR</strong></p>
+        <p>VAT: <strong>${vatAmount.toFixed(3)} OMR</strong></p>
+        <p class="final">Final Total: ${finalTotal.toFixed(3)} OMR</p>
+    `;
+}
+
+function resetPrice() {
+
+    document.getElementById("priceM2").value = "";
+    document.getElementById("requiredArea").value = "";
+    document.getElementById("discount").value = "";
+    document.getElementById("vat").value = "";
+
+    document.getElementById("priceResult").innerHTML = `
+        <p>Original Amount: <strong>0.000 OMR</strong></p>
+        <p>Discount: <strong>0.000 OMR</strong></p>
+        <p>After Discount: <strong>0.000 OMR</strong></p>
+        <p>VAT: <strong>0.000 OMR</strong></p>
+        <p class="final">Final Total: 0.000 OMR</p>
+    `;
+}
+
+
+// BOX
+function calculateBox() {
+
+    let required = Number(document.getElementById("boxRequired").value);
+    let areaBox = Number(document.getElementById("areaPerBox").value);
+    let priceBox = Number(document.getElementById("boxPrice").value);
+
+    let boxes = Math.ceil(required / areaBox);
+    let supplied = boxes * areaBox;
+    let totalPrice = boxes * priceBox;
+
+    document.getElementById("boxResult").innerHTML = `
+        <p>Required Boxes: <strong>${boxes}</strong></p>
+        <p>Total Supplied Area: <strong>${supplied.toFixed(3)} m²</strong></p>
+        <p>Total Price: <strong>${totalPrice.toFixed(3)} OMR</strong></p>
+    `;
+}
+
+
+// WALL
+function calculateWall() {
+
+    let length = Number(document.getElementById("wallLength").value);
+    let width = Number(document.getElementById("wallWidth").value);
+    let height = Number(document.getElementById("wallHeight").value);
+    let walls = Number(document.getElementById("wallCount").value);
+    let deduction = Number(document.getElementById("deduction").value);
+
+    let area;
+
+    if (walls == 4) {
+        area = 2 * (length + width) * height;
+    } else {
+        area = length * height * walls;
+    }
+
+    area -= deduction;
+
+    if (area < 0) area = 0;
+
+    let sqft = area * 10.7639;
+
+    document.getElementById("wallResult").innerHTML = `
+        <p>Final Area: <strong>${area.toFixed(3)} m²</strong></p>
+        <p>Final Area: <strong>${sqft.toFixed(3)} ft²</strong></p>
+    `;
+}
+
+</script>
+
+</body>
+</html>
